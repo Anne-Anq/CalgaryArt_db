@@ -8,7 +8,7 @@ CREATE TABLE users(
     hashed_password VARCHAR(255) NOT NULL, 
     f_name VARCHAR(255) NOT NULL, 
     l_name VARCHAR(255) NOT NULL, 
-    picture_URL VARCHAR(255), 
+    avatar_URL VARCHAR(255), 
     created_at TIMESTAMP DEFAULT NOW() 
 );
 
@@ -34,8 +34,8 @@ CREATE TABLE art_pieces(
     id INTEGER AUTO_INCREMENT PRIMARY KEY, 
     ap_name VARCHAR(255) NOT NULL, 
     ap_description TEXT(3000),
-    price DECIMAL(15,2),
-    picture_URL VARCHAR(255),
+    ap_price DECIMAL(15,2),
+    ap_picture_URL VARCHAR(255),
     created_at TIMESTAMP DEFAULT NOW(), 
     artist_id INTEGER NOT NULL,
     FOREIGN KEY(artist_id) REFERENCES artists(id) 
@@ -49,8 +49,8 @@ CREATE TABLE exhibitions(
     date_to DATETIME,
     created_at TIMESTAMP DEFAULT NOW(), 
     creator_id INTEGER NOT NULL,
-    FOREIGN KEY(venue_id) REFERENCES venues(id),
-    FOREIGN KEY(ap_id) REFERENCES art_pieces(id),
+    FOREIGN KEY(venue_id) REFERENCES venues(id) ON DELETE CASCADE,
+    FOREIGN KEY(ap_id) REFERENCES art_pieces(id) ON DELETE CASCADE,
     FOREIGN KEY(creator_id) REFERENCES users(id)
 );
 
@@ -64,11 +64,12 @@ SOURCE exhibitions.sql
 
 -- SELECT f_name, l_name, bio FROM users JOIN artists ON users.id = artists.user_id;
 -- SELECT f_name, b_name FROM users JOIN venues ON users.id = venues.creator_id;
--- SELECT f_name, ap_name FROM users 
---     JOIN artists 
---     ON users.id = artists.user_id
---     JOIN art_pieces
---     ON artists.id = art_pieces.artist_id;
+SELECT f_name, ap_name FROM users 
+    JOIN artists 
+    ON users.id = artists.user_id
+    JOIN art_pieces
+    ON artists.id = art_pieces.artist_id
+    WHERE artists.id =2;
 
 SELECT ap_name, f_name, b_name FROM exhibitions
 JOIN art_pieces
@@ -79,3 +80,9 @@ JOIN users
     ON users.id = artists.user_id
 JOIN venues
     ON venues.id = exhibitions.venue_id;
+
+
+SELECT f_name, ap_name FROM users
+     JOIN artists ON users.id = artists.user_id
+     JOIN art_pieces ON artists.id = art_pieces.artist_id
+     WHERE artists.id = 2 GROUP BY artists.id;
