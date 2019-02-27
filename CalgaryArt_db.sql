@@ -17,7 +17,7 @@ CREATE TABLE artists(
     user_id INTEGER NOT NULL,
     bio TEXT(3000), 
     created_at TIMESTAMP DEFAULT NOW(), 
-    FOREIGN KEY(user_id) REFERENCES users(id) 
+    FOREIGN KEY(user_id) REFERENCES users(id)  ON DELETE CASCADE
 );
 CREATE TABLE venues(
     id INTEGER AUTO_INCREMENT PRIMARY KEY, 
@@ -38,7 +38,7 @@ CREATE TABLE art_pieces(
     ap_picture_URL VARCHAR(255),
     created_at TIMESTAMP DEFAULT NOW(), 
     artist_id INTEGER NOT NULL,
-    FOREIGN KEY(artist_id) REFERENCES artists(id) 
+    FOREIGN KEY(artist_id) REFERENCES artists(id)  ON DELETE CASCADE
 );
 
 CREATE TABLE exhibitions(
@@ -62,27 +62,28 @@ SOURCE exhibitions.sql
 
 
 
+
 -- SELECT f_name, l_name, bio FROM users JOIN artists ON users.id = artists.user_id;
 -- SELECT f_name, b_name FROM users JOIN venues ON users.id = venues.creator_id;
-SELECT f_name, ap_name FROM users 
-    JOIN artists 
-    ON users.id = artists.user_id
-    JOIN art_pieces
-    ON artists.id = art_pieces.artist_id
-    WHERE artists.id =2;
+-- SELECT f_name, ap_name FROM users 
+--     JOIN artists 
+--     ON users.id = artists.user_id
+--     JOIN art_pieces
+--     ON artists.id = art_pieces.artist_id
+--     WHERE artists.id =2;
 
-SELECT ap_name, f_name, b_name FROM exhibitions
-JOIN art_pieces
-    ON art_pieces.id = exhibitions.ap_id
-JOIN artists
-    ON artists.id = art_pieces.artist_id
-JOIN users
-    ON users.id = artists.user_id
-JOIN venues
-    ON venues.id = exhibitions.venue_id;
+-- SELECT ap_name, f_name, b_name FROM exhibitions
+-- JOIN art_pieces
+--     ON art_pieces.id = exhibitions.ap_id
+-- JOIN artists
+--     ON artists.id = art_pieces.artist_id
+-- JOIN users
+--     ON users.id = artists.user_id
+-- JOIN venues
+--     ON venues.id = exhibitions.venue_id;
 
 
-SELECT f_name, ap_name FROM users
-     JOIN artists ON users.id = artists.user_id
-     JOIN art_pieces ON artists.id = art_pieces.artist_id
-     WHERE artists.id = 2 GROUP BY artists.id;
+-- SELECT f_name, ap_name FROM users
+--      JOIN artists ON users.id = artists.user_id
+--      JOIN art_pieces ON artists.id = art_pieces.artist_id
+--      WHERE artists.id = 2 GROUP BY artists.id;
